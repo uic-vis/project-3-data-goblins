@@ -22,7 +22,42 @@
 <body>
     <div id="plot">
         <script>
+          const margin = ({top: 10, right: 20, bottom: 50, left: 105});
+          const visWidth = 500;
+          const visHeight = 400;
+          const svg = d3.select("#plot")
+            .append("svg")
+              .attr('width', visWidth + margin.left + margin.right)
+              .attr('height', visHeight + margin.top + margin.bottom)
+            .append("g")
+              .attr("transform",
+                  "translate(" + margin.left + "," + margin.top + ")");
+          
+          const colors = [d3.schemeDark2[0],d3.schemeDark2[1],d3.schemeDark2[2],d3.schemeDark2[3]]
             
+            d3.csv("https://raw.githubusercontent.com/uic-vis/project-3-data-goblins/main/cleanData.csv").then(function(data){
+
+            xZip = d3.scaleLinear()
+                .domain(d3.extent(crashData, d => d.zip)).nice()
+                .range([0, visWidth])
+                
+            yAge = d3.scaleLinear()
+                .domain(d3.extent(crashData, d => d.age)).nice()
+                .range([visHeight, 0])
+                
+            g.append("g").call(xAxis, xZip, 'Zipcode');
+            g.append("g").call(yAxis, yAge, 'Age');
+
+            // draw points
+            const dots = g.selectAll('circle')
+                .data(crashData)//.filter(d => d.zipOrigins))
+                .join('circle')
+                .attr('cx', d => xZip(d.zip))
+                .attr('cy', d => yAge(d.age))
+                .attr("r", d => 1)
+                .attr('fill', d => zipColor(d.zip))
+                .attr('opacity', 1)
+
         </script>
     
     </div>
