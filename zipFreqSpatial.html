@@ -55,7 +55,12 @@
       }
 
       function onEachFeature(feature, layer) { 
-        style(feature);
+          style(feature);
+
+          layer.on({
+              mouseover: highlightFeature,
+              mouseout: resetHighlight,
+          });
           
           popupItem = {maxWidth: 200};
           layer.bindPopup(
