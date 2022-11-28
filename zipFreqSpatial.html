@@ -55,8 +55,6 @@
       }
 
       function onEachFeature(feature, layer) { 
-          style(feature);
-
           layer.on({
               mouseover: highlightFeature,
               mouseout: resetHighlight,
