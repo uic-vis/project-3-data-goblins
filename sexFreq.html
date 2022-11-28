@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css" integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js" integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=" crossorigin=""></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/colorbrewer.v1.min.js"></script>
+
+    <style>
+
+        #barchart {
+            position: absolute;
+            width: 90%;
+            height: 100%;
+        }
+
+    </style>
+
+</head>
+<body>
+    <div id="barchart">
+      <script>
+        function callBar() {
+          d3.csv("https://raw.githubusercontent.com/uic-vis/project-3-data-goblins/main/sexFreq.csv").then(function(data){
+            const sexes = Array.from(new Set(data.map(d => d.SEX)));
+            const sexColor = d3.scaleOrdinal().domain(sexes).range(d3.schemeCategory10);
+
+            function barChart(data) { 
+
+              // plot setup
+              const margin = {top: 10, right: 20, bottom: 50, left: 50};
+              const visWidth = 800;
+              const visHeight = 500;
+              const svg = d3.select("#barchart")
+              .append("svg")
+                  .attr('width', visWidth + margin.left + margin.right)
+                  .attr('height', visHeight + margin.top + margin.bottom);
+              const g = svg.append("g")
+                  .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+              // scales
+              const x = d3.scaleLinear()
+                  .range([0, visWidth]);
+              
+              const y = d3.scaleBand()
+                  .domain(sexColor.domain())
+                  .range([0, visHeight])
+                  .padding(0.2);
+              
+              // creating x and y axis
+              const xAxis = d3.axisBottom(x).tickSizeOuter(0);
+              const xAxisGroup = g.append("g")
+                  .attr("transform", `translate(0, ${visHeight})`);
+              
+              xAxisGroup.append("text")
+                  .attr("x", visWidth / 2)
+                  .attr("y", 40)
+                  .attr("fill", "black")
+                  .attr("text-anchor", "middle")
+                  .text("Number of Crashes");
+              
+              const yAxis = d3.axisLeft(y);
+              const yAxisGroup = g.append("g")
+                  .call(yAxis)
+                  .call(g => g.select(".domain").remove());
+                
+              let barsGroup = g.append("g");
+
+
+           
+                
+                const totalCrashes = d3.rollup(
+                  data,
+                  v=> d3.sum(v, d => (d['FREQUENCY'])),
+                  d => d['SEX']
+                );
+
+                // update x scale
+                x.domain([0, d3.max(totalCrashes.values())]).nice()
+
+                // update x axis
+                const t = svg.transition()
+                    .ease(d3.easeLinear)
+                    .duration(200);
+
+                xAxisGroup
+                  .transition(t)
+                  .call(xAxis);
+                
+                barsGroup.selectAll("rect")
+                  .data(totalCrashes, ([cases, count]) => cases)
+                  .join("rect")
+                    .attr("fill", ([cases, count]) => sexColor(cases))
+                    .attr("height", y.bandwidth())
+                    .attr("x", 0)
+                    .attr("y", ([cases, count]) => y(cases))
+                  .transition(t)
+                    .attr("width", ([cases, count]) => x(count))
+              
+
+                svg.append("text")
+                    .attr("x", 500)             
+                    .attr("y", 20)
+                    .attr("text-anchor", "middle")  
+                    .style("font-size", "30px") 
+                    .style("text-decoration", "underline")  
+                    .text("Crashes by Sex");
+            }
+
+
+            barChart(data);
+            //bar.update(data);
+          })
+        }
+
+
+      function init() {
+        callBar();
+      }
+
+      window.onload = init;
+    </script>
+
+    </div>
+    
+
+</body>
+
+</html>
