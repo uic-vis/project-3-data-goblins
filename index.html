@@ -35,28 +35,41 @@
           
           const colors = [d3.schemeDark2[0],d3.schemeDark2[1],d3.schemeDark2[2],d3.schemeDark2[3]]
             
-            d3.csv("https://raw.githubusercontent.com/uic-vis/project-3-data-goblins/main/cleanData.csv").then(function(crashData){
-
-            xZip = d3.scaleLinear()
-                .domain(d3.extent(crashData, d => d.zip)).nice()
-                .range([0, visWidth])
+            d3.csv("https://raw.githubusercontent.com/uic-vis/project-3-data-goblins/main/sexFreq.csv").then(function(data){
                 
-            yAge = d3.scaleLinear()
-                .domain(d3.extent(crashData, d => d.age)).nice()
-                .range([visHeight, 0])
-                
-            g.append("g").call(xAxis, xZip, 'Zipcode');
-            g.append("g").call(yAxis, yAge, 'Age');
+            var sexRanges = data.columns.slice(1)
+            const sexRangeColor = d3.scaleOrdinal().domain(sexRanges).range(colors);
 
-            // draw points
-            const dots = g.selectAll('circle')
-                .data(crashData)//.filter(d => d.zipOrigins))
-                .join('circle')
-                .attr('cx', d => xZip(d.zip))
-                .attr('cy', d => yAge(d.age))
-                .attr("r", d => 1)
-                .attr('fill', d => zipColor(d.zip))
-                .attr('opacity', 1)
+            const x = d3.scaleLinear()
+            .range([0, visWidth]);
+
+            const y = d3.scaleBand()
+            .domain(sexColor.domain())
+            .range([0, visHeight])
+            .padding(0.2);
+
+            const xAxis = d3.axisBottom(x).tickSizeOuter(0);
+  
+              const xAxisGroup = g.append("g")
+                  .attr("transform", `translate(0, ${visHeight})`);
+
+              xAxisGroup.append("text")
+                  .attr("x", visWidth / 2)
+                  .attr("y", 40)
+                  .attr("fill", "black")
+                  .attr("text-anchor", "middle")
+                  .text("Frequency");
+
+              const yAxis = d3.axisLeft(y);
+
+              const yAxisGroup = g.append("g")
+                  .call(yAxis)
+                  // remove baseline from the axis
+                  .call(g => g.select(".domain").remove());
+
+              let barsGroup = g.append("g");
+                
+            }
 
         </script>
     
