@@ -67,9 +67,6 @@
                 
               let barsGroup = g.append("g");
 
-
-           
-                
                 const totalCrashes = d3.rollup(
                   data,
                   v=> d3.sum(v, d => (d['FREQUENCY'])),
@@ -104,7 +101,6 @@
                     .attr("y", 20)
                     .attr("text-anchor", "middle")  
                     .style("font-size", "30px") 
-                    .style("text-decoration", "underline")  
                     .text("Crashes by Sex");
             }
 
