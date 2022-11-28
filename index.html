@@ -22,58 +22,59 @@
 <body>
     <div id="plot">
         <script>
-          const margin = ({top: 10, right: 20, bottom: 50, left: 105});
-          const visWidth = 500;
-          const visHeight = 400;
-          const svg = d3.select("#plot")
+            const margin = ({top: 10, right: 20, bottom: 50, left: 105});
+            const visWidth = 500;
+            const visHeight = 400;
+            const svg = d3.select("#plot")
             .append("svg")
-              .attr('width', visWidth + margin.left + margin.right)
-              .attr('height', visHeight + margin.top + margin.bottom)
-            .append("g")
-              .attr("transform",
-                  "translate(" + margin.left + "," + margin.top + ")");
+                .attr('width', visWidth + margin.left + margin.right)
+                .attr('height', visHeight + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
           
-          const colors = [d3.schemeDark2[0],d3.schemeDark2[1],d3.schemeDark2[2],d3.schemeDark2[3]]
+            const colors = [d3.schemeDark2[0],d3.schemeDark2[1],d3.schemeDark2[2],d3.schemeDark2[3]]
             
             d3.csv("https://raw.githubusercontent.com/uic-vis/project-3-data-goblins/main/sexFreq.csv").then(function(data){
                 
-            var sexRanges = data.columns.slice(1)
-            const sexRangeColor = d3.scaleOrdinal().domain(sexRanges).range(colors);
+                var sexRanges = data.columns.slice(1)
+                const sexRangeColor = d3.scaleOrdinal().domain(sexRanges).range(colors);
 
-            const x = d3.scaleLinear()
-            .range([0, visWidth]);
+                const x = d3.scaleLinear()
+                .range([0, visWidth]);
 
-            const y = d3.scaleBand()
-            .domain(sexColor.domain())
-            .range([0, visHeight])
-            .padding(0.2);
+                const y = d3.scaleBand()
+                .domain(sexColor.domain())
+                .range([0, visHeight])
+                .padding(0.2);
 
-            const xAxis = d3.axisBottom(x).tickSizeOuter(0);
-  
-              const xAxisGroup = g.append("g")
-                  .attr("transform", `translate(0, ${visHeight})`);
+                const xAxis = d3.axisBottom(x).tickSizeOuter(0);
+    
+                const xAxisGroup = g.append("g")
+                    .attr("transform", `translate(0, ${visHeight})`);
 
-              xAxisGroup.append("text")
-                  .attr("x", visWidth / 2)
-                  .attr("y", 40)
-                  .attr("fill", "black")
-                  .attr("text-anchor", "middle")
-                  .text("Frequency");
+                xAxisGroup.append("text")
+                    .attr("x", visWidth / 2)
+                    .attr("y", 40)
+                    .attr("fill", "black")
+                    .attr("text-anchor", "middle")
+                    .text("Frequency");
 
-              const yAxis = d3.axisLeft(y);
+                const yAxis = d3.axisLeft(y);
 
-              const yAxisGroup = g.append("g")
-                  .call(yAxis)
-                  // remove baseline from the axis
-                  .call(g => g.select(".domain").remove());
+                const yAxisGroup = g.append("g")
+                    .call(yAxis)
+                    // remove baseline from the axis
+                    .call(g => g.select(".domain").remove());
 
-              let barsGroup = g.append("g");
+                let barsGroup = g.append("g");
                 
-            }
+            })
 
         </script>
     
     </div>
     
 
-</body></html>
+</body>
+
+</html>
