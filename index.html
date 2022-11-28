@@ -23,7 +23,7 @@
         <script>
 
             function callLine() {
-              d3.csv("").then(function(data){
+              d3.csv("https://raw.githubusercontent.com/uic-vis/project-3-data-goblins/main/monthFreq.csv").then(function(data){
 
                 function LineChart(data, {
                     x = ([x]) => x, // given d in data, returns the (temporal) x-value
@@ -43,7 +43,7 @@
                     yDomain, // [ymin, ymax]
                     yRange = [height - marginBottom, marginTop], // [bottom, top]
                     yFormat, // a format specifier string for the y-axis
-                    yLabel = "Covid Cases", // a label for the y-axis
+                    yLabel = "Frequency of Cases", // a label for the y-axis
                     color = "crimson", // stroke color of line
                     strokeLinecap = "round", // stroke line cap of the line
                     strokeLinejoin = "round", // stroke line join of the line
@@ -77,7 +77,7 @@
                         .x(i => xScale(X[i]))
                         .y(i => yScale(Y[i]));
 
-                    const svg = d3.select("#plot")
+                    const svg = d3.select("#linechart")
                     .append("svg")
                         .attr("width", width)
                         .attr("height", height)
@@ -112,8 +112,8 @@
                 }
 
                 LineChart(data,{
-                  x: d => d.Date,
-                  y: d => d["Cases - Total"]
+                  x: d => d.MONTH,
+                  y: d => d['FREQUENCY']
                 })
               })
             }
