@@ -13,7 +13,7 @@
             .range(colorbrewer.YlOrRd[9])
             .domain([0, 5800]);
         return {
-            fillColor: colorScale(feature.properties.frequency),
+            fillColor: colorScale(feature.properties["frequency"]),
             weight: 2,
             opacity: 1,
             color: 'white',
