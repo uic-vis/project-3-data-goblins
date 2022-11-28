@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css" integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js" integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=" crossorigin=""></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/colorbrewer.v1.min.js"></script>
+
+ <style>
+        #plot {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="plot">
+        <script>
+
+function age_zip_month_scatterplot() {
+  // set up
+
+  const initialValue = crashDataMonth;
+  
+  const svg = d3.create('svg')
+      .attr('width', visWidth + margin.left + margin.right)
+      .attr('height', visHeight + margin.top + margin.bottom)
+      .property('value', initialValue);
+  
+  const g = svg.append('g')
+      .attr('transform', `translate(${margin.left}, ${margin.top})`);
+  
+  // axes
+  g.append("g").call(xAxis, xZip, 'Zipcode');
+  g.append("g").call(yAxis, yAge, 'Age');
+  
+  // draw points
+  const dots = g.selectAll('circle')
+    // filter data to only contain selected car origins
+    .data(crashDataMonth)
+    .join('circle')
+      .attr('cx', d => xZip(d.zip))
+      .attr('cy', d => yAge(d.age))
+      .attr("r", d => 1)
+      .attr('fill', d => zipColor(d.zip))
+      .attr('opacity', 1)
+
+  // ********** brushing here **********
+  
+  const brush = d3.brush()
+      // set the space that the brush can take up
+      .extent([[0, 0], [visWidth, visHeight]])
+      // handle events
+      .on('brush', onBrush)
+      .on('end', onEnd);
+  
+  g.append('g')
+      .call(brush);
+  
+  function onBrush(event) {
+    // event.selection gives us the coordinates of the
+    // top left and bottom right of the brush box
+    const [[x1, y1], [x2, y2]] = event.selection;
+    
+    // return true if the dot is in the brush box, false otherwise
+    function isBrushed(d) {
+      const cx = xZip(d.zip);
+      const cy = yAge(d.age)
+      return cx >= x1 && cx <= x2 && cy >= y1 && cy <= y2;
+    } 
+    
+    // style the dots
+    dots.attr('fill', d => isBrushed(d) ? zipColor(d.zip) : 'gray');
+    
+    // update the data that appears in the cars variable
+    svg.property('value', crashDataMonth.filter(isBrushed)).dispatch('input');
+  }
+  
+  function onEnd(event) {
+    // if the brush is cleared
+    if (event.selection === null) {
+      // reset the color of all of the dots
+      dots.attr('fill', d => zipColor(d.zip));
+      svg.property('value', initialValue).dispatch('input');
+    }
+  }
+  
+  return svg.node();
+}
+
+</script>
+    </div>
+
+</body>
+
+</html>
