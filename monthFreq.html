@@ -44,6 +44,7 @@
                     yRange = [height - marginBottom, marginTop], // [bottom, top]
                     yFormat, // a format specifier string for the y-axis
                     yLabel = "Frequency of Cases", // a label for the y-axis
+                    xLabel = "Month (1=January)", // a label for the y-axis
                     color = "crimson", // stroke color of line
                     strokeLinecap = "round", // stroke line cap of the line
                     strokeLinejoin = "round", // stroke line join of the line
@@ -85,7 +86,13 @@
 
                     svg.append("g")
                         .attr("transform", `translate(0,${height - marginBottom})`)
-                        .call(xAxis);
+                        .call(xAxis)
+                        .call(g => g.append("text")
+                            .attr("x", width/2)
+                            .attr("y", marginBottom)
+                            .attr("fill", "crimson")
+                            .attr("text-anchor", "start")
+                            .text(xLabel));
 
                     svg.append("g")
                         .attr("transform", `translate(${marginLeft},0)`)
