@@ -1,6 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
   <script> 
+    function createBarChart() {
+
+      var barChart = d3.selectAll('#plot').append('svg').style('width', '100%').style('height', '100%');
+      var width = 25;
+      var height = 15;
+      console.log(zipData['features']);
+      var g = barChart.selectAll('.bar')
+          .data(zipData['features'])
+          .enter()
+          .append('g')
+          .attr('class', 'bar');
+
+      var x = d3.scaleLog().domain([1,5800]).range([0,200]);
+      console.log(x(10));
+
+      g.append('rect')
+          .style('stroke-width', '1')
+          .style('stroke', 'rgb(0,0,0)')
+          .style('fill', 'rgb(200,200,200)')
+          .attr('x', 50)
+          .attr('y', (d,i) => {return 5+(height+5)*i})
+          .attr('width', (d,i) => {return x(d['properties']['frequency'])})
+          .attr('height', height)
+          .attr('id', (d,i) => {return d['properties']['zip']})
+
+      g.append('text')
+          .attr('x', 0)
+          .attr('y', (d,i) => {return 15+(height+5)*i})
+          .text((d,i) => {return d['properties']['zip'];})
+    }
+    
     function createMap() {
       var map = L.map('map').setView([41.83,-87.7],11);
 
@@ -27,31 +58,20 @@
       
           layer.setStyle({
               weight: 3,
-              color: 'gray',
+              color: '#666',
               dashArray: '',
               fillOpacity: 0.7
           });
           
-          var selectedState = layer.feature.properties["objectid"];
-          d3.selectAll("#"+selectedState).style('fill', 'rgb(120,50,50)')
+          var selectedZip = layer.feature.properties["zip"];
+          d3.selectAll("#"+selectedZip).style('fill', 'rgb(120,50,50)');
       
           layer.bringToFront();
       }
 
       function resetHighlight(e) {
-        var layer = e.target;
-      
-        layer.setStyle({
-            weight: 3,
-            color: 'white',
-            dashArray: '',
-            fillOpacity: 0.3
-        });
-        
-        var selectedState = layer.feature.properties["objectid"];
-        d3.selectAll("#"+selectedState).style('fill', 'rgb(120,50,50)')
-    
-        layer.bringToFront();
+        geojson.resetStyle(e.target);
+        d3.selectAll("rect").style('fill', 'rgb(200,200,200)')
       }
 
       function onEachFeature(feature, layer) { 
@@ -68,7 +88,7 @@
           ,popupItem);
       }
 
-      var geoJson = L.geoJson(zipData,{onEachFeature: onEachFeature}).addTo(map);
+      var geoJson = L.geoJson(zipData,{style: style, onEachFeature: onEachFeature}).addTo(map);
       
     }
 
@@ -80,6 +100,7 @@
 
     function init() {
       createMap();
+      createBarChart();
     }
 
     window.onload = init;
@@ -98,9 +119,16 @@
     <style>
       #map { 
             position: absolute;
-            width: 90%;
+            width: 70%;
             height: 100%; 
         }
+
+      #plot {
+          position: absolute;
+          left: 72%;
+          width: 28%;
+          height: 100%; 
+      }
 
     </style>
 
