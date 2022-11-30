@@ -6,7 +6,7 @@
 
       var barChart = d3.selectAll('#plot').append('svg').style('width', '100%').style('height', '100%');
       var width = 25;
-      var height = 15;
+      var height = 7;
       console.log(zipData['features']);
       var g = barChart.selectAll('.bar')
           .data(zipData['features'])
@@ -66,7 +66,7 @@
             });
             
             var selectedZip = layer.feature.properties["zip"];
-            d3.selectAll("#" + selectedZip)
+            d3.selectAll("#"+selectedZip)
               .style('fill', 'rgb(120,50,50)')
 
             layer.bringToFront();
