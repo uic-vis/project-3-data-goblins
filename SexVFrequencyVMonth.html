@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css" integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js" integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=" crossorigin=""></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/colorbrewer.v1.min.js"></script>
+    
+    <style>
+        h1 {text-align: center;}
+        h2 {text-align: center;}
+        div {text-align: center;}
+        button {text-align: center;}
+        .parent {
+            margin: 1rem;
+            padding: 1rem 1rem;
+            text-align: center;
+        }
+        .child {
+            display: inline-block;
+            padding: 1rem 1rem;
+            vertical-align: middle;
+        }
+    </style>
+
+</head>
+<body>
+    <h1>Crashes Around Sex and Month of Year</h1>
+    <h2><strong>Question 2:</strong> Does Month and Sex Indicate Likelihood to Crash</h2>
+    
+    <div class='parent'>
+        <div class='child'><button onclick="update(January)">January</button></div>
+        <div class='child'><button onclick="update(February)">February</button></div>
+        <div class='child'><button onclick="update(March)">March</button></div>
+        <div class='child'><button onclick="update(April)">April</button></div>
+        <div class='child'><button onclick="update(May)">May</button></div>
+        <div class='child'><button onclick="update(June)">June</button></div>
+        <div class='child'><button onclick="update(July)">July</button></div>
+        <div class='child'><button onclick="update(August)"> Augusty</button></div>
+        <div class='child'><button onclick="update(September)">September</button></div>
+        <div class='child'><button onclick="update(October)">October</button></div>
+        <div class='child'><button onclick="update(November)">November</button></div>
+        <div class='child'><button onclick="update(December)">December</button></div>
+    </div>
+    
+    <div class='parent'>
+        <div class='child'><div id="sex_visualization"></div></div>
+    </div>   
+    
+ 
+</body>
+
+<script>
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ //this is the main js code
+        var x, y, xAxis, yAxis, svg, height;
+
+function sexFreq() {
+
+    var margin = {top: 40, right: 40, bottom: 70, left: 60},
+        width = 450 - margin.left - margin.right;
+    height = 410 - margin.top - margin.bottom;
+    
+    svg = d3.select("#sex_visualization")
+    .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+    svg.append("text")
+    .attr("x", width/2)
+    .attr("y", height+50)
+    .attr("text-anchor", "middle")
+    .style("font-size", "20px")
+    .text("Sex Frequency by Month");
+
+    svg.append("text")
+    .attr("text-anchor", "end")
+    .attr("transform", "rotate(-90)")
+    .attr("y", -margin.left+10)
+    .attr("x", -margin.top)
+    .text("Frequency")
+
+    
+    x = d3.scaleBand()
+    .range([ 0, width ])
+    .padding(0.2);
+    xAxis = svg.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    
+    y = d3.scaleLinear()
+    .range([ height, 0]);
+    yAxis = svg.append("g")
+    .attr("class", "myYaxis")
+    sexFreqUpdate(data1)
+}
+//--------------------------------------------------------------------------------------------------
+function sexFreqUpdate(data) {
+
+    x.domain(data.map(function(v) { return v.group; }))
+    xAxis.call(d3.axisBottom(x))
+    
+    y.domain([0, d3.max(data, function(v) { return v.value }) ]);
+    yAxis.transition().duration(1000).call(d3.axisLeft(y));
+    
+    var f = svg.selectAll("rect")
+        .data(data)
+    f
+        .enter()
+        .append("rect") 
+        .merge(f) 
+        .transition()
+        .duration(1000)
+        .attr("x", function(v) { return x(v.group); })
+        .attr("y", function(v) { return y(v.value); })
+        .attr("width", x.bandwidth())
+        .attr("height", function(v) { return height - y(v.value); })
+        .attr("fill", "#69b3a2")
+    f
+        .exit()
+        .remove()
+}
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+
+function update(v1) {
+    sexFreqUpdate(v1);
+}
+
+function init() {
+    sexFreq();
+}
+
+window.onload = init;
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  //end of main js code
+    
+//here comes the data
+var January = [
+    {group: "Female", value: 2628},
+    {group: "Male", value:  3799},
+  ];
+
+var February = [
+    {group: "Female", value: 2842},
+    {group: "Male", value: 4373},
+  ];
+
+var March = [
+    {group: "Female", value: 3119},
+    {group: "Male", value: 4031},
+  ];
+
+var April = [
+    {group: "Female", value: 3274},
+    {group: "Male", value: 4340},
+  ];
+
+var May = [
+    {group: "Female", value: 4038},
+    {group: "Male", value: 5222},
+  ];
+
+var June = [
+     {group: "Female", value: 4123},
+     {group: "Male", value: 5434},
+  ];
+
+var July = [
+     {group: "Female", value: 4144},
+     {group: "Male", value: 5291},
+  ];
+
+var August = [
+    {group: "Female", value: 4044},
+    {group: "Male", value: 5100},
+  ];
+
+var September = [
+    {group: "Female", value: 4129},
+    {group: "Male", value: 5153},
+  ];
+
+var October = [
+    {group: "Female", value: 4556},
+    {group: "Male", value: 5312},
+  ];
+
+var November = [
+    {group: "Female", value: 3601},
+    {group: "Male", value: 4534},
+  ];
+
+var December = [
+    {group: "Female", value: 3480},
+     {group: "Male", value: 4506},
+  ];
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //end of data
+    
+    </script>  
+        
+    
+    </html>    
