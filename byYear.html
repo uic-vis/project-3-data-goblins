@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+  <script>
+    var year2019 = [
+      {group: "Jan", value: 19186},
+      {group: "Feb", value: 18090},
+      {group: "Mar", value: 21280},
+      {group: "Apr", value: 20394},
+      {group: "May", value: 23179},
+      {group: "Jun", value: 23346},
+      {group: "Jul", value: 23350},
+      {group: "Aug", value: 21931},
+      {group: "Sep", value: 21514},
+      {group: "Oct", value:21409},
+      {group: "Nov", value: 20732},
+      {group: "Dec", value: 20362},
+    ];
+    var year2020 = [
+        {group: "Jan", value: 18611},
+        {group: "Feb", value: 19363},
+        {group: "Mar", value: 14552},
+        {group: "Apr", value: 8973},
+        {group: "May", value: 13669},
+        {group: "Jun", value: 16206},
+        {group: "Jul", value: 18965},
+        {group: "Aug", value: 19157},
+        {group: "Sep", value: 17081},
+        {group: "Oct", value: 17320},
+        {group: "Nov", value: 14363},
+        {group: "Dec", value: 14728},
+    ];
+    var year2021 = [
+        {group: "Jan", value: 14308},
+        {group: "Feb", value: 16272},
+        {group: "Mar", value: 15770},
+        {group: "Apr", value: 16731},
+        {group: "May", value: 20563},
+        {group: "Jun", value: 21835},
+        {group: "Jul", value: 21056},
+        {group: "Aug", value: 20811},
+        {group: "Sep", value: 20887},
+        {group: "Oct", value: 21695},
+        {group: "Nov", value: 18512},
+        {group: "Dec", value: 17859},
+    ];
+      
+    var Year2019 = [
+        {group: "Monday", value: 36312},
+        {group: "Tuesday", value: 37826},
+        {group: "Wednesday", value: 36727},
+        {group: "Thursday", value: 38110},
+        {group: "Friday", value: 42094},
+        {group: "Saturday", value: 40109},
+        {group: "Sunday", value: 32151},
+    ];
+    var Year2020 = [
+        {group: "Monday", value: 25962},
+        {group: "Tuesday", value: 27141},
+        {group: "Wednesday", value: 28097},
+        {group: "Thursday", value: 27662},
+        {group: "Friday", value: 33725},
+        {group: "Saturday", value: 31464},
+        {group: "Sunday", value: 25347},
+    ];
+    var Year2021 = [
+        {group: "Monday", value: 31203},
+        {group: "Tuesday", value: 31477},
+        {group: "Wednesday", value: 31990},
+        {group: "Thursday", value: 32250},
+        {group: "Friday", value: 38726},
+        {group: "Saturday", value: 36634},
+        {group: "Sunday", value: 30915},
+    ];
+
+
+    var x;
+    var y;
+    var xAxis;
+    var yAxis;
+    var svg;
+    var height;
+
+    function bar1() {
+        var margin = {top: 30, right: 30, bottom: 70, left: 60},
+            width = 460 - margin.left - margin.right;
+        height = 400 - margin.top - margin.bottom;
+        
+        svg = d3.select("#my_dataviz")
+        .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
+
+        svg.append("text")
+        .attr("text-anchor", "end")
+        .attr("transform", "rotate(-90)")
+        .attr("y", -margin.left+10)
+        .attr("x", -margin.top)
+        .text("Frequency")
+
+        x = d3.scaleBand()
+        .range([ 0, width ])
+        .padding(0.2);
+        xAxis = svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        
+        y = d3.scaleLinear()
+        .range([ height, 0]);
+        yAxis = svg.append("g")
+        .attr("class", "myYaxis")
+        updateBar1(year2019)
+    }
+
+    function updateBar1(data) {
+        x.domain(data.map(function(d) { return d.group; }))
+        xAxis.call(d3.axisBottom(x))
+        
+        y.domain([0, d3.max(data, function(d) { return d.value }) ]);
+        yAxis.transition().duration(1000).call(d3.axisLeft(y));
+        
+        var u = svg.selectAll("rect")
+            .data(data)
+        u
+            .enter()
+            .append("rect") 
+            .merge(u) 
+            .transition()
+            .duration(1000)
+            .attr("x", function(d) { return x(d.group); })
+            .attr("y", function(d) { return y(d.value); })
+            .attr("width", x.bandwidth())
+            .attr("height", function(d) { return height - y(d.value); })
+            .attr("fill", "green")
+        u
+            .exit()
+            .remove()
+    }
+
+
+    var x1;
+    var y1;
+    var xAxis1;
+    var yAxis1;
+    var svg1;
+    var height1;
+
+    function bar2() {
+        var margin = {top: 30, right: 30, bottom: 70, left: 60},
+            width = 460 - margin.left - margin.right;
+        height1 = 400 - margin.top - margin.bottom;
+        
+        svg1 = d3.select("#my_dataviz")
+        .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height1 + margin.top + margin.bottom)
+        .append("g")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
+
+        svg1.append("text")
+        .attr("text-anchor", "end")
+        .attr("transform", "rotate(-90)")
+        .attr("y", -margin.left+10)
+        .attr("x", -margin.top)
+        .text("Frequency")
+
+        x1 = d3.scaleBand()
+        .range([ 0, width ])
+        .padding(0.2);
+        xAxis1 = svg1.append("g")
+        .attr("transform", "translate(0," + height1 + ")")
+        
+        y1 = d3.scaleLinear()
+        .range([ height1, 0]);
+        yAxis1 = svg1.append("g")
+        .attr("class", "myYaxis")
+        updateBar2(Year2019)
+    }
+
+    function updateBar2(data) {
+
+        x1.domain(data.map(function(d) { return d.group; }))
+        xAxis1.call(d3.axisBottom(x1))
+        
+        y1.domain([0, d3.max(data, function(d) { return d.value }) ]);
+        yAxis1.transition().duration(1000).call(d3.axisLeft(y1));
+        
+        var u = svg1.selectAll("rect")
+            .data(data)
+        u
+            .enter()
+            .append("rect") 
+            .merge(u) 
+            .transition()
+            .duration(1000)
+            .attr("x", function(d) { return x1(d.group); })
+            .attr("y", function(d) { return y1(d.value); })
+            .attr("width", x1.bandwidth())
+            .attr("height", function(d) { return height1 - y1(d.value); })
+            .attr("fill", "blue")
+        u
+            .exit()
+            .remove()
+    }
+
+    function update(d1, d2) {
+        updateBar1(d1);
+        updateBar2(d2);
+    }
+
+    function init() {
+        bar1();
+        bar2();
+    }
+
+    window.onload = init;
+  </script>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css" integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin="" />
+      <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js" integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=" crossorigin=""></script>
+      <script src="https://d3js.org/d3.v4.min.js"></script>
+      <script src="weatherData.js"></script>
+      <script src="weather.js"></script>
+        
+      <style>
+          h1 {text-align: center;}
+          h2 {text-align: center;}
+          h3 {text-align: center;}
+          h4 {text-align: center;}
+          p {text-align: center;}
+          div {text-align: center;}
+          button {text-align: center;}
+          .parent {
+              margin: 1rem;
+              padding: 1rem 1rem;
+              text-align: center;
+          }
+          .child {
+              display: inline-block;
+              padding: 1rem 1rem;
+              vertical-align: middle;
+          }
+    </style>
+
+  </head>
+<body>
+
+    <div class='parent'>
+        <div class='child'><button onclick="update(year2019, Year2019)">2019</button></div>
+        <div class='child'><button onclick="update(year2020, Year2020)">2020</button></div>
+        <div class='child'><button onclick="update(year2021, Year2021)">2021</button></div>
+    </div>
+
+    <div class='parent'>
+        <div class='child'><div id="my_dataviz"></div></div>
+        <div class='child'><div id="my_dataviz1"></div></div>
+    </div>      
+
+</body>
+
+</html>
