@@ -85,7 +85,7 @@
             width = 460 - margin.left - margin.right;
         height = 400 - margin.top - margin.bottom;
         
-        svg = d3.select("#my_dataviz")
+        svg = d3.select("#hist1")
         .append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
@@ -151,7 +151,7 @@
             width = 460 - margin.left - margin.right;
         height1 = 400 - margin.top - margin.bottom;
         
-        svg1 = d3.select("#my_dataviz")
+        svg1 = d3.select("#hist2")
         .append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height1 + margin.top + margin.bottom)
@@ -217,47 +217,45 @@
 
     window.onload = init;
   </script>
+
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
       <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css" integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin="" />
       <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js" integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=" crossorigin=""></script>
       <script src="https://d3js.org/d3.v4.min.js"></script>
-      <script src="weatherData.js"></script>
-      <script src="weather.js"></script>
         
       <style>
-          h1 {text-align: center;}
-          h2 {text-align: center;}
-          h3 {text-align: center;}
-          h4 {text-align: center;}
-          p {text-align: center;}
-          div {text-align: center;}
-          button {text-align: center;}
-          .parent {
-              margin: 1rem;
-              padding: 1rem 1rem;
-              text-align: center;
-          }
-          .child {
-              display: inline-block;
-              padding: 1rem 1rem;
-              vertical-align: middle;
-          }
-    </style>
+        #hist1 { 
+          position: absolute;
+          width: 50%;
+          height: 100%; 
+        }
+  
+        #hist2 {
+          position: absolute;
+          left: 52%;
+          width: 40%;
+          height: 100%; 
+        }
+        #buttons {
+          display: inline-block;
+          vertical-align: middle;
+        }
+      </style>
 
   </head>
 <body>
 
-    <div class='parent'>
-        <div class='child'><button onclick="update(year2019, Year2019)">2019</button></div>
-        <div class='child'><button onclick="update(year2020, Year2020)">2020</button></div>
-        <div class='child'><button onclick="update(year2021, Year2021)">2021</button></div>
+    <div>
+        <div id="buttons"><button onclick="update(year2019, Year2019)">2019</button></div>
+        <div id="buttons"><button onclick="update(year2020, Year2020)">2020</button></div>
+        <div id="buttons"><button onclick="update(year2021, Year2021)">2021</button></div>
     </div>
 
-    <div class='parent'>
-        <div class='child'><div id="my_dataviz"></div></div>
-        <div class='child'><div id="my_dataviz1"></div></div>
+    <div>
+        <div><div id="hist1"></div></div>
+        <div><div id="hist2"></div></div>
     </div>      
 
 </body>
