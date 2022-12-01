@@ -26,8 +26,6 @@
 
 </head>
 <body>
-    <h1>Crashes Around Sex and Month of Year</h1>
-    <h2><strong>Question 2:</strong> Does Month and Sex Indicate Likelihood to Crash</h2>
     
     <div class='parent'>
         <div class='child'><button onclick="update(January)">January</button></div>
@@ -37,7 +35,7 @@
         <div class='child'><button onclick="update(May)">May</button></div>
         <div class='child'><button onclick="update(June)">June</button></div>
         <div class='child'><button onclick="update(July)">July</button></div>
-        <div class='child'><button onclick="update(August)"> Augusty</button></div>
+        <div class='child'><button onclick="update(August)"> August</button></div>
         <div class='child'><button onclick="update(September)">September</button></div>
         <div class='child'><button onclick="update(October)">October</button></div>
         <div class='child'><button onclick="update(November)">November</button></div>
@@ -95,7 +93,7 @@ function sexFreq() {
     .range([ height, 0]);
     yAxis = svg.append("g")
     .attr("class", "myYaxis")
-    sexFreqUpdate(data1)
+    sexFreqUpdate(January)
 }
 //--------------------------------------------------------------------------------------------------
 function sexFreqUpdate(data) {
@@ -118,7 +116,7 @@ function sexFreqUpdate(data) {
         .attr("y", function(v) { return y(v.value); })
         .attr("width", x.bandwidth())
         .attr("height", function(v) { return height - y(v.value); })
-        .attr("fill", "#69b3a2")
+        .attr("fill", "red")
     f
         .exit()
         .remove()
