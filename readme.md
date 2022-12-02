@@ -9,7 +9,7 @@ In this project, we worked with the dataset of Chicago Traffic Crashes – Peopl
 
 ## Our dataset
 
-We chose to only work with the data from 2021 because using more than one year would make the data too large and unloadable to Observable. Using python datetime, we extracted the month of the crash from CRASH_DATE and inserted this as a new column into the data. Then in Observable, we cleaned our data so that only rows with a zip code, sex, age, and date were used for plotting. We also limited the zip codes to the 67 Chicago zip codes.
+We chose to only work with the data from 2021 for most of our visualization because using more than one year would make the data too large and unloadable to Observable. For out third visualization, we incorporated the datasets for 2019, 2020, and 20201. Using python datetime, we extracted the month of the crash from CRASH_DATE and inserted this as a new column into the data. Then in Observable, we cleaned our data so that only rows with a zip code, sex, age, and date were used for plotting. We also limited the zip codes to the 67 Chicago zip codes.
 The zip code, age, sex, and date were all recorded by the officer taking information about the incident. Additionally, we think it is worth noting that sex was recorded by the officer based on what they determined the sex of the people involved in the crash to be.
 
 ## Our Questions
@@ -26,7 +26,13 @@ We also wanted to explore the interactions between these categories. We decided 
 
 ## Our Plots
 
-Ultimately, we made 5 visualizations: a bar chart of zip code versus frequency, a bar chart of age versus frequency, a bar chart of sex versus frequency, a scatterplot of age versus zip code with a brushable feature that created a bar chart of sex versus frequency per intersection of age and zip code, and we made a scatterplot of age versus zip code with a drop-down menu that separated the data based on month.
+Our first visualization is a brushable scatterplot of the age of people and the frequency of involvment in a crash. Brushing of this plot selects points and changes the linked barchart which demonstrates the frequency of each sex involved in crashes. Figure shows the scatterplot and barchart before any portion is selected. When selecting various age ranges, it can be seen that Males are more involved in crashes than Females. This is demonstrated in Figure 2.
+
+![image](https://user-images.githubusercontent.com/69224393/205402406-d7e711f1-cc1d-4c54-a2f9-b876c745d9e8.png)
+Figure 1: Scatterplot of age vs. frequency and barchart of sex vs. frequency before any selection is made.
+
+![image](https://user-images.githubusercontent.com/69224393/205402482-5fb23f9a-2334-4665-b007-0335eeac67f3.png)
+Figure 2: Scatterplot of age vs. frequency and barchart of sex vs. frequency after a portion of the scatterplot is chosen. The barchart is updated based on the brushed portion of the scatterplot.
 
 ## Final Thoughts
 
