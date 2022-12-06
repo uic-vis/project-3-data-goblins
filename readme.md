@@ -1,7 +1,7 @@
 # CS 424 Project 2: Traffic Crashes - People
 Dataset used: https://data.cityofchicago.org/Transportation/Traffic-Crashes-People/u6pd-qa9d
 
-Link to website: sites.google.com/uic.edu/cs-424
+Link to website: https://sites.google.com/uic.edu/cs424-project3/home
 
 ## Introduction
 
